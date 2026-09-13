@@ -1,0 +1,89 @@
+{
+  "approved": "2026-09-13 larger explosion preview",
+  "approved_preview_sha256": "1a660a2d24aded9b72b4e099013a1357151e273cc33cf8f22518c0d4d739cf6f",
+  "source_sha256": "3b7f1ed7c8d06d066ce96c599b645460e85a02e5b5545abf183ca8fe3296bd23",
+  "generator": "@napi-rs/canvas 0.1.100",
+  "frames": 6,
+  "impact_delay_ms": 90,
+  "duration_ms": 350,
+  "digit_size": 128,
+  "colon_size": 72,
+  "atlas_sha256": "2b925121ffeab516ced3efd5cd50e9899e1dd98f9c6b22c3733288d88137c5ef",
+  "header_sha256": "51dfcdcf2fc6c04adfa327eeba9a095bcd65a53864d491a835c42e74452d6a10",
+  "images": [
+    {
+      "file": "digit-0.png",
+      "sha256": "beb59a2d01d782f4cda1e2cee674717aa6e74e143f355d1a2b90011ef6d35a7d",
+      "size": 128,
+      "frame": 0
+    },
+    {
+      "file": "digit-1.png",
+      "sha256": "d03830b9cdbb7ba63b056b1c3af450d1556dc9f2dcccfd9d0fe08505670f0cd0",
+      "size": 128,
+      "frame": 1
+    },
+    {
+      "file": "digit-2.png",
+      "sha256": "1bbb2eefbcb4d47b30ae32f0feac35175ccff932c629748e137bac17b368d93a",
+      "size": 128,
+      "frame": 2
+    },
+    {
+      "file": "digit-3.png",
+      "sha256": "15a7907bfc0999d6316bd93dac92aedb8260833d7b3423206d6d6c755cc7a172",
+      "size": 128,
+      "frame": 3
+    },
+    {
+      "file": "digit-4.png",
+      "sha256": "31bd03b577ebe6ec20fc609ba68343a233993da26f1d62362d714d5792859619",
+      "size": 128,
+      "frame": 4
+    },
+    {
+      "file": "digit-5.png",
+      "sha256": "6607ce36bef7e96cd0cce7a6d19d679125984b3fbb6f32023a1ee91ebfd1e7c9",
+      "size": 128,
+      "frame": 5
+    },
+    {
+      "file": "colon-0.png",
+      "sha256": "0508060067d52b2b1070d628443e5a29d31639113d96e2a9b332340492d2303d",
+      "size": 72,
+      "frame": 0
+    },
+    {
+      "file": "colon-1.png",
+      "sha256": "e0787e33ea3a7dbf9681f613ad8a6f1393e4ae7e5d02fff87a0a22a24ca0c64a",
+      "size": 72,
+      "frame": 1
+    },
+    {
+      "file": "colon-2.png",
+      "sha256": "601a08348374aa76aff48ce686716268ed50d2ba4e8b5324b00aec674dfe1c63",
+      "size": 72,
+      "frame": 2
+    },
+    {
+      "file": "colon-3.png",
+      "sha256": "583d0764c902b3c2b0cce46f95314eb0be6400645edf73d78c4fa1ea18e1310c",
+      "size": 72,
+      "frame": 3
+    },
+    {
+      "file": "colon-4.png",
+      "sha256": "9a97268a32bcbb32d643fc477ef07a7c9f3a41d222b21c73a2af331e6d9361df",
+      "size": 72,
+      "frame": 4
+    },
+    {
+      "file": "colon-5.png",
+      "sha256": "bd0404f5eb8c6b0a5489726f9b79cae5deb5e8c3c9fddae68820f522f7cb58f1",
+      "size": 72,
+      "frame": 5
+    }
+  ],
+  "pixel_count": 56851,
+  "compiled_bytes": 237052
+}

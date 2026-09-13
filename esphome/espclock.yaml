@@ -1,0 +1,254 @@
+esphome:
+  name: espclock
+  friendly_name: ESPClock
+  name_add_mac_suffix: false
+  min_version: 2026.7.0
+  includes:
+    - car_explosion_assets.h
+    - car_clock_renderer.h
+    - ants_v2_assets.h
+    - ants_v2_simulation.h
+    - ants_v2_renderer.h
+    - clock_gestures.h
+    - flip_glass_assets.h
+    - flip_glass_renderer.h
+
+esp32:
+  variant: esp32s3
+  flash_size: 16MB
+  flash_mode: dio
+  flash_frequency: 80MHz
+  cpu_frequency: 240MHz
+  framework:
+    type: esp-idf
+
+psram:
+  mode: octal
+  speed: 80MHz
+
+logger:
+  level: INFO
+
+preferences:
+  # Save selection changes without the default one-minute delay.
+  flash_write_interval: 1ms
+
+api:
+
+# Use the standard scan timings for Wi-Fi/Bluetooth coexistence.
+esp32_ble_tracker:
+  scan_parameters:
+    active: true
+    continuous: true
+
+bluetooth_proxy:
+  active: true
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  power_save_mode: none
+  fast_connect: true
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+spi:
+  - id: display_qspi
+    type: quad
+    clk_pin: GPIO47
+    data_pins: [GPIO21, GPIO48, GPIO40, GPIO39]
+
+i2c:
+  - id: touch_i2c
+    sda: GPIO4
+    scl: GPIO8
+    frequency: 400kHz
+    scan: false
+
+power_supply:
+  - id: lcd_backlight
+    pin: GPIO1
+    enable_on_boot: true
+
+image:
+  - platform: file
+    id: car_sprite
+    file: "assets/car.png"
+    type: RGB
+    transparency: alpha_channel
+
+  - platform: file
+    id: crushed_car_sprite
+    file: "assets/car_crushed.png"
+    type: RGB
+    transparency: alpha_channel
+
+  - platform: file
+    id: ants_v2_gold
+    file: "assets/ants_v2/atlas_gold.png"
+    type: RGB565
+    transparency: alpha_channel
+
+  - platform: file
+    id: ants_v2_idle
+    file: "assets/ants_v2/atlas_idle.png"
+    type: RGB565
+    transparency: alpha_channel
+
+  - platform: file
+    id: ants_v2_fire
+    file: "assets/ants_v2/atlas_fire.png"
+    type: RGB565
+    transparency: alpha_channel
+
+display:
+  - platform: mipi_spi
+    id: main_display
+    model: JC3248W535
+    spi_id: display_qspi
+    rotation: 90
+    color_order: RGB
+    byte_order: big_endian
+    buffer_size: 100%
+    auto_clear_enabled: false
+    update_interval: 42ms
+    lambda: |-
+      if (flip_glass::selected()) {
+        flip_glass::render(it);
+      } else if (ants_v2::selected()) {
+        ants_v2::render(it, id(ants_v2_gold), id(ants_v2_idle), id(ants_v2_fire));
+      } else {
+        car_clock::render(it, id(car_sprite), id(crushed_car_sprite));
+      }
+
+touchscreen:
+  - platform: axs15231
+    id: main_touchscreen
+    i2c_id: touch_i2c
+    display: main_display
+    interrupt_pin: GPIO3
+    transform:
+      mirror_x: false
+      mirror_y: true
+      swap_xy: true
+    calibration:
+      x_min: 0
+      x_max: 480
+      y_min: 0
+      y_max: 320
+
+    on_touch:
+      - lambda: |-
+          auto &gesture = clock_gestures::touch;
+          gesture.begin(touch.id, touch.x, touch.y, millis());
+          if (touches.size() > 1) gesture.cancel();
+
+    on_update:
+      - lambda: |-
+          auto &gesture = clock_gestures::touch;
+          for (const auto &touch : touches) {
+            if ((touch.state == 1 || touch.state == 2) && touch.id != gesture.finger) {
+              gesture.cancel();
+              ants_v2_sim::touch_end();
+              return;
+            }
+          }
+          for (const auto &touch : touches) {
+            if (touch.id != gesture.finger || touch.state != 2) continue;
+            const bool begin_drag = gesture.move(touch.id, touch.x, touch.y, millis());
+            if (!gesture.active || !ants_v2::selected()) continue;
+            if (begin_drag) {
+              ants_v2_sim::touch_start(touch.x, touch.y);
+            } else if (gesture.dragging) {
+              ants_v2_sim::touch_move(touch.x, touch.y);
+            }
+          }
+
+    on_release:
+      - lambda: |-
+          auto &gesture = clock_gestures::touch;
+          const auto action = gesture.finish(millis());
+          ants_v2_sim::touch_end();
+          if (action == clock_gestures::Action::Next || action == clock_gestures::Action::Previous) {
+            auto call = id(clock_display).make_call();
+            if (action == clock_gestures::Action::Next) call.select_next(true);
+            else call.select_previous(true);
+            call.perform();
+          } else if (action == clock_gestures::Action::Tap && !flip_glass::selected()) {
+            if (clock_router::cars_selected()) {
+              car_clock::tap(gesture.x, gesture.y);
+            } else if (ants_v2::selected()) {
+              ants_v2_sim::touch_start(gesture.x, gesture.y);
+              ants_v2_sim::touch_end();
+            }
+          }
+
+select:
+  - platform: template
+    name: "Clock Display"
+    id: clock_display
+    icon: "mdi:clock-digital"
+    optimistic: true
+    restore_value: true
+    initial_option: "Cars"
+    options:
+      - "Cars"
+      - "Ants"
+      - "Flip Glass"
+    # Apply both restored startup values and new selections to the renderer.
+    on_value:
+      - lambda: |-
+          clock_gestures::touch.cancel();
+          ants_v2::set_selected(x == "Ants");
+          flip_glass::set_selected(x == "Flip Glass");
+          ants_v2_sim::touch_end();
+          if (x == "Ants" || x == "Flip Glass") {
+            clock_router::set_mode(clock_router::DisplayMode::Ants);
+          } else {
+            clock_router::set_mode(clock_router::DisplayMode::Cars);
+            car_clock::restart_entry_animation();
+          }
+
+binary_sensor:
+  - platform: status
+    name: "Online"
+    entity_category: diagnostic
+
+sensor:
+  - platform: wifi_signal
+    name: "Wi-Fi Signal"
+    update_interval: 60s
+    entity_category: diagnostic
+
+i2s_audio:
+  - id: speaker_i2s
+    i2s_lrclk_pin: GPIO2
+    i2s_bclk_pin: GPIO42
+
+speaker:
+  - platform: i2s_audio
+    id: onboard_speaker
+    i2s_audio_id: speaker_i2s
+    dac_type: external
+    i2s_dout_pin: GPIO41
+    channel: mono
+    sample_rate: 48000
+    bits_per_sample: 16bit
+    buffer_duration: 500ms
+
+media_player:
+  - platform: speaker
+    name: "Speaker"
+    id: clock_media_player
+    announcement_pipeline:
+      speaker: onboard_speaker
+      format: FLAC
+      sample_rate: 48000
+      num_channels: 1
+    buffer_size: 250000
+    volume_initial: 40%

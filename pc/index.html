@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ESPClock Desktop Preview</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <h1>ESPClock Desktop Preview</h1>
+      <p>Browser preview for the ESP32 clock project. Use this first, flash later.</p>
+    </header>
+
+    <section class="controls">
+      <label>
+        Display mode
+        <select id="modeSelect">
+          <option value="cars">Cars</option>
+          <option value="ants">Ants</option>
+        </select>
+      </label>
+
+      <label>
+        Time
+        <input id="timeInput" type="time" step="60" />
+      </label>
+
+      <div class="button-row">
+        <button id="syncNowBtn">Sync now</button>
+        <button id="pauseBtn">Pause</button>
+        <button id="nextMinuteBtn">+1 minute</button>
+        <button id="restartBtn">Restart animation</button>
+      </div>
+
+      <label>
+        Speed
+        <input id="speedInput" type="range" min="0.25" max="4" step="0.25" value="1" />
+        <span id="speedValue">1.00×</span>
+      </label>
+
+      <label class="checkbox-label">
+        <input id="guidesCheckbox" type="checkbox" checked />
+        Show guides
+      </label>
+    </section>
+
+    <section class="stage-section">
+      <div class="stage-meta">
+        <span id="statusText">Loading assets…</span>
+        <span>Canvas: 480×320</span>
+      </div>
+      <div class="canvas-frame">
+        <canvas id="clockCanvas" width="480" height="320"></canvas>
+      </div>
+      <p class="hint">
+        In <strong>Cars</strong> mode: click or tap a car to trigger an explosion, crush it and watch its replacement drive in.
+        In <strong>Ants</strong> mode: move the mouse to scatter ants, click an ant to squish it.
+      </p>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

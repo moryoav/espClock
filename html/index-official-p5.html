@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#071012">
+  <title>ESPClock — Official p5.js Prototype</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/p5@1.11.11/lib/p5.min.js"></script>
+  <script defer src="sketch.js"></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">ESP32 concept prototype</p>
+        <h1>ESPClock</h1>
+        <p class="subtitle">Custom evenly spaced ants form each digit with a uniform overall height.</p>
+      </div>
+      <span class="runtime-chip" title="This launcher downloads p5.js from jsDelivr">Official p5.js · online</span>
+    </header>
+
+    <section class="toolbar" aria-label="Clock controls">
+      <button id="live-button" class="active" type="button">Live time</button>
+      <button id="next-button" type="button">+1 minute</button>
+      <button id="demo-button" type="button">Auto demo</button>
+      <button id="scatter-button" type="button">Scatter</button>
+    </section>
+
+    <section class="canvas-card" id="fullscreen-card">
+      <div id="canvas-host" aria-label="Animated ant clock"></div>
+      <div class="status-row">
+        <span id="mode-badge" class="mode-badge">LIVE</span>
+        <span id="status-text" aria-live="polite">Starting…</span>
+      </div>
+    </section>
+
+    <p class="help-text">
+      Move the pointer over the ants to repel them. Click or tap directly on an ant to squash it; a replacement will run in.
+      Keyboard: <kbd>L</kbd> live, <kbd>N</kbd> next minute, <kbd>D</kbd> demo,
+      <kbd>Space</kbd> scatter, <kbd>F</kbd> fullscreen.
+    </p>
+  </main>
+  <noscript>This prototype requires JavaScript.</noscript>
+</body>
+</html>

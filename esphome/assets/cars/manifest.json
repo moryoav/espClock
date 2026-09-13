@@ -1,0 +1,20 @@
+{
+  "source_sha256": "244123502bc8b1a27e06d64af61b929018a086d69c39be87bc5b07ba2a68ef1f",
+  "sprite_sha256": "204deef13abc606ad834065d4c01ea979ea7b66322746584273f5b71b42f73de",
+  "canvas": [
+    28,
+    52
+  ],
+  "car_size": [
+    22,
+    48
+  ],
+  "source_bounds": [
+    59,
+    76,
+    804,
+    1670
+  ],
+  "compiled_rgba_bytes": 5824,
+  "source_preparation": "Built-in image tool: remove only the exterior black background from the supplied damaged yellow car; preserve car, dents, dark windows and front-up orientation; true transparent PNG, no added objects."
+}

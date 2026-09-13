@@ -1,0 +1,99 @@
+:root {
+  color-scheme: dark;
+  --bg: #10161a;
+  --panel: #182127;
+  --panel2: #202c33;
+  --text: #edf4f7;
+  --muted: #a9b9c0;
+  --accent: #4db6ff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #0d1317 0%, #131b20 100%);
+  color: var(--text);
+}
+.app-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 20px;
+}
+header h1 { margin: 0 0 6px; font-size: 28px; }
+header p { margin: 0 0 18px; color: var(--muted); }
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  align-items: end;
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+.controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 140px;
+  color: var(--muted);
+  font-size: 14px;
+}
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+button, select, input[type="time"] {
+  background: var(--panel2);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 10px;
+  padding: 9px 12px;
+  font-size: 14px;
+}
+button { cursor: pointer; }
+button:hover { border-color: rgba(255,255,255,0.2); }
+input[type="range"] { width: 180px; }
+.checkbox-label {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 10px !important;
+  min-width: auto !important;
+}
+.stage-section {
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 16px;
+}
+.stage-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+.canvas-frame {
+  background: #0a0d0f;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  overflow: auto;
+}
+canvas {
+  width: min(960px, 100%);
+  height: auto;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background: #050b0f;
+  border-radius: 8px;
+}
+.hint {
+  color: var(--muted);
+  margin: 12px 2px 0;
+  font-size: 13px;
+}

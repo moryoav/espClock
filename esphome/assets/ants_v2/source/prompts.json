@@ -1,0 +1,17 @@
+[
+  {
+    "asset": "antsv2_body_final",
+    "prompt": "Generate a transparent-background PNG asset, using real alpha transparency. One small golden amber ant torso only (head with dark eyes and small mandibles, thorax, narrow waist, oval abdomen), no legs and no antennae. Perfect straight-down orthographic view, head up, abdomen down. Beautiful glossy golden insect shell with subtle shading. Centered with large EMPTY TRANSPARENT margins. This is a detached animation rig BODY sprite. There must be absolutely no gray checkerboard or any drawn background. The empty pixels must have alpha zero. No diagram, text, cast shadow, floor or other objects.",
+    "method": "built-in image_gen"
+  },
+  {
+    "asset": "antsv2_leg",
+    "prompt": "Create one isolated golden ant LEG as a reusable cutout component for the same top-down sprite animation rig as the attached reference ant. Supporting style reference: the attached golden ant. Exactly one entire articulated ant leg, detached cleanly from the body. Match the warm amber gold polished insect shell, darker brown rounded joints and subtle highlights of the reference. Arrange leg diagonally from a rounded hip joint near the upper left, through a gently bent knee around the center, to a slender segmented lower leg and a small hooked foot at the lower right. Long slim upper leg, lower leg about 1.4 times its length. Natural insect anatomy, no human or mechanical limb. The hip, knee and foot must be plainly distinguishable, sharp silhouette, no overlap with anything else, full leg visible with padding. Orthographic straight top-down view. Output ONE leg only, no body, no other legs, no diagram or text. Actual transparent RGBA background, no cast shadow, no baked checkerboard.",
+    "method": "built-in image_gen"
+  },
+  {
+    "asset": "antsv2_antenna",
+    "prompt": "Create one isolated ANT ANTENNA as a reusable cutout component for the same top-down sprite animation rig as the attached reference ant. Supporting style reference: the attached golden ant. Exactly one complete antenna, warm golden amber with dark brown joints and fine subtle shell highlights like the reference. Slender gently elbowed antenna: rounded base near lower right, shaft running toward upper left, subtle elbow about midway, tapered softly segmented tip pointing toward upper left. Elegant and slim, not thick or club-like, clearly readable silhouette. Entire antenna visible with generous padding, orthographic top-down view. No body, legs or additional objects. Truly transparent RGBA background, no cast shadow, no baked checkerboard, no labels, no text.",
+    "method": "built-in image_gen"
+  }
+]
