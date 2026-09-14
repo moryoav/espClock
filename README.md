@@ -4,6 +4,35 @@ I built espClock as an interactive ESP32-S3 touchscreen clock for Home Assistant
 Cars park to form the time, ants walk into place, and glass digits flip as the
 minutes change. Swipe the display or choose a mode from Home Assistant.
 
+## Hardware: this specific ESP32-S3 display module
+
+I built this project's firmware and examples for the **Guition/Jingcai
+JC3248W535 ESP32-S3 N16R8 module** linked below. The supplied ESPHome
+configuration is specific to this model's display, touch, backlight, and audio
+wiring. Other ESP32 boards or displays require changes, even if their screen
+size is the same.
+
+**[Buy this ESP32-S3 touchscreen module on AliExpress](https://s.click.aliexpress.com/e/_c3j6UHwH)**
+
+[![ESP32-S3 module with its built-in touchscreen and black bezel, from the AliExpress product listing](docs/images/esp32-s3-display-module.jpg)](https://s.click.aliexpress.com/e/_c3j6UHwH)
+
+I chose this module because it already comes with a **screen and bezel**, with
+the electronics covered apart from the expansion pins on the back. It needs
+**no separate case, enclosure, or 3D printing**. Follow the
+[ESPHome installation steps](#install-with-esphome), flash it over USB, connect
+it to Home Assistant, and keep it powered to use it as-is.
+
+- ESP32-S3 with 16 MB flash and 8 MB octal PSRAM.
+- 3.5-inch 320 × 480 IPS display with an AXS15231B controller.
+- Capacitive touch, with the screen used in landscape at 480 × 320.
+- Onboard I²S speaker output.
+
+The photo is from the linked product listing and shows the seller's demo
+interface. The espClock modes are shown below. Check the model and board
+revision when ordering and before flashing.
+
+## Clock previews
+
 | Cars | Ants | Flip Glass |
 | :---: | :---: | :---: |
 | ![Animated Cars clock with tap and replacement](esphome/assets/cars/preview/tap-replacement.gif) | ![Animated Ants clock with time change and touch interaction](esphome/assets/ants_v2/preview/clock-interaction.gif) | ![Animated Flip Glass clock](esphome/assets/flip_glass/preview/flip-12-45-to-12-46.gif) |
@@ -70,19 +99,6 @@ several digits start together, including the transition through midnight.
 | **Speaker** media player | Play announcements through the onboard speaker output |
 | Diagnostics | Expose online status and Wi-Fi signal strength |
 | Wireless updates | Install later firmware builds over ESPHome OTA |
-
-## Hardware
-
-I use the Guition/Jingcai **JC3248W535** family with an **ESP32-S3 N16R8**:
-
-- 16 MB flash and 8 MB octal PSRAM.
-- 3.5-inch 320 × 480 IPS display with an AXS15231B controller.
-- Capacitive touch, with the screen used in landscape at 480 × 320.
-- Onboard I²S speaker output.
-
-The configuration contains the display, touch, backlight, and audio pin mapping
-for this board. Check your board revision before flashing; a different display
-with the same screen size can use different wiring or controllers.
 
 ## Install with ESPHome
 
