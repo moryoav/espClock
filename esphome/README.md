@@ -1,7 +1,7 @@
 # espClock ESPHome firmware
 
-I use this configuration for the three-mode espClock touchscreen clock:
-**Cars**, **Ants**, and **Flip Glass**.
+I use this configuration for the four-mode espClock touchscreen clock:
+**Cars**, **Ants**, **Flip Glass**, and **Flip Glass Light**.
 
 See the [main README](../README.md) for animated previews, controls, hardware,
 and first-time installation. This configuration requires ESPHome 2026.7.0 or
@@ -22,6 +22,8 @@ Put these files in your ESPHome configuration directory, normally
 - `clock_gestures.h`
 - `flip_glass_renderer.h`
 - `flip_glass_assets.h`
+- `flip_glass_light_renderer.h`
+- `flip_glass_light_assets.h`
 - `assets/car.png`
 - `assets/car_crushed.png`
 - `assets/ants_v2/atlas_gold.png`
@@ -30,7 +32,7 @@ Put these files in your ESPHome configuration directory, normally
 
 Add `wifi_ssid` and `wifi_password` to your existing `secrets.yaml`, or copy
 `secrets.example.yaml` to `secrets.yaml` for a new setup. Keep local secrets
-private. The Flip Glass and explosion artwork is embedded in the generated
+private. Both glass faces and the explosion artwork are embedded in the generated
 headers, so their source PNGs are only needed for development.
 
 ## First installation and updates
@@ -56,7 +58,10 @@ specify a timezone independently of the build environment.
   called `ants_v2`, and those source filenames are retained.
 - **Flip Glass:** glass numerals with reflections and a 1.5-second split-flap
   transition for changed digits.
-- Swipe left for Cars → Ants → Flip Glass → Cars; swipe right to reverse.
+- **Flip Glass Light:** new clear-glass numerals, a pale daylight background,
+  and long reflections, with the same 1.5-second transition.
+- Swipe left for Cars → Ants → Flip Glass → Flip Glass Light → Cars; swipe right
+  to reverse.
 - The selected mode is saved across restarts. Cars is the initial default.
 - Home Assistant receives the mode select, online status, Wi-Fi signal, and
   speaker media player. Active Bluetooth proxy support is enabled.
@@ -70,4 +75,5 @@ without the usual one-minute delay.
 - [Cars touch animation and validation](CARS_TOUCH.md)
 - [Ant artwork, interactions, and sprite generation](ANTS_V2.md)
 - [Flip Glass renderer and transitions](FLIP_GLASS.md)
+- [Flip Glass Light artwork and renderer](FLIP_GLASS_LIGHT.md)
 - [Host tests and build commands](../README.md#development-checks)

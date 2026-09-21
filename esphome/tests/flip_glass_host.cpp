@@ -2,9 +2,13 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#ifdef TEST_FLIP_GLASS_LIGHT
+#include "flip_glass_light_renderer.h"
+using namespace flip_glass_light;
+#else
 #include "flip_glass_renderer.h"
-
 using namespace flip_glass;
+#endif
 constexpr int kPixels = 480 * 320;
 void dump(const std::string &path) {
   std::ofstream output(path, std::ios::binary);
@@ -19,10 +23,19 @@ int main(int argc, char **argv) {
   constexpr int guard = 128;
   std::vector<uint16_t> memory(kPixels + guard * 2, 0xa55a);
   gFramebuffer = memory.data() + guard;
+#ifdef TEST_FLIP_GLASS_LIGHT
+  auto *allocated_layer = gLayer;
+  std::vector<uint32_t> layer_memory(kWidth * kDigitHeight + guard * 2, 0xa55aa55a);
+  gLayer = layer_memory.data() + guard;
+#endif
   auto check_bounds = [&]() {
     for (int i = 0; i < guard; ++i) {
       assert(memory[i] == 0xa55a);
       assert(memory[kPixels + guard + i] == 0xa55a);
+#ifdef TEST_FLIP_GLASS_LIGHT
+      assert(layer_memory[i] == 0xa55aa55a);
+      assert(layer_memory[kWidth * kDigitHeight + guard + i] == 0xa55aa55a);
+#endif
     }
   };
   // Exercise every minute boundary in a full day, including all carry patterns.
@@ -131,5 +144,8 @@ int main(int argc, char **argv) {
   assert(display.transfers == 2);
   for (auto &digit : gDigits) assert(!digit.flipping);
   gFramebuffer = allocated;
+#ifdef TEST_FLIP_GLASS_LIGHT
+  gLayer = allocated_layer;
+#endif
   std::puts("PASS: unchanged pixels/colon, exact settled frame, midnight, dropped frames, time corrections, wraparound, bounds, mode re-entry and idle transfer suppression.");
 }

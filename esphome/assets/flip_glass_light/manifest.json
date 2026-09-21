@@ -1,0 +1,22 @@
+{
+  "status": "approved",
+  "cell_width": 100,
+  "cell_height": 128,
+  "glyphs": "0123456789:",
+  "compiled_bytes": 870500,
+  "source_sha256": {
+    "0.png": "c8d281d76fe8c9ce7cb643806290b95d6c446ce8c6004681b5cc4a9f308f31ce",
+    "1.png": "942d8fd200e976ae53335b0389a9fd2b1bbefed1182a17afe0a2e698b1c3ab1c",
+    "2.png": "c2de1586df15d7517e878ba2fc30e4edf2164b13edfb5c6a9428103092b38c68",
+    "3.png": "58a8d58683f923ae078d0eb5b5bc19ad605f82da496b7f7f6c1d60b678c9f946",
+    "4.png": "95f508fed91d4cc112c66a1f1789cdba5bcfbec8a2822ac4f107788fca9698aa",
+    "5.png": "7c7bd47a98b9e16a33e08219d4e9eae64d759dcdc0282b3521399c02fab5a5dd",
+    "6.png": "78ee4178b551b916665f85d54768da0af88150bfd4079932a174e5b9dc782d02",
+    "7.png": "fd7c65a27fddd6846ff6234e3f942d0f01a32d846f63d2b54c0cdcadce0f9cc1",
+    "8.png": "fece01d00df700a79316df06e4b04dab9d755d3ba9a6a0cc8da2fe4f71b9bf85",
+    "9.png": "664ab10ea53879602a76deab45bf575f3dfceb8cdc1856df1852a2e47a191461",
+    "colon.png": "8fc2254b94508adbb11a53917bcf14c533f81953da249575f76bb21a31a55997",
+    "background.png": "f5ce5a7e651459e8fdfa9364f52310b4ffd34621f4d03635dc43a1f876dfcd6e"
+  },
+  "header_sha256": "6752443e1952b8cf6545b311de6e17a4e8e029ab51963d2e4289d50ee6dfd32a"
+}

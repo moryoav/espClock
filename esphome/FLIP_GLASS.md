@@ -1,7 +1,7 @@
 # Flip Glass
 
 Clock display selectable through Home Assistant's **Clock Display** or
-horizontal swipes: Cars → Ants → Flip Glass → Cars. The selection is
+horizontal swipes: Cars → Ants → Flip Glass → Flip Glass Light → Cars. The selection is
 saved across restarts. Ants uses the newer PNG renderer, previously named `ants_v2`.
 
 ## Appearance and transition
@@ -10,6 +10,9 @@ The ten numerals and colon are extracted from the approved generated design in
 `assets/flip_glass/approved-design.png`. Rounded smoky glass, cool edge highlights,
 and warm lower highlights are retained. The translucent appearance is baked onto
 black in RGB565; this mode has a fixed black background.
+
+[Flip Glass Light](FLIP_GLASS_LIGHT.md) is a separate selectable face with new
+clear-glass artwork and a daylight background. The original dark face is unchanged.
 
 At rest the digits are whole. When the time changes, only changed positions flip
 for 1.5 seconds, starting together when several positions change. The old upper half

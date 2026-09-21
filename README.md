@@ -33,9 +33,13 @@ revision when ordering and before flashing.
 
 ## Clock previews
 
-| Cars | Ants | Flip Glass |
-| :---: | :---: | :---: |
-| ![Animated Cars clock with tap and replacement](esphome/assets/cars/preview/tap-replacement.gif) | ![Animated Ants clock with time change and touch interaction](esphome/assets/ants_v2/preview/clock-interaction.gif) | ![Animated Flip Glass clock](esphome/assets/flip_glass/preview/flip-12-45-to-12-46.gif) |
+| Cars | Ants |
+| :---: | :---: |
+| ![Animated Cars clock with tap and replacement](esphome/assets/cars/preview/tap-replacement.gif) | ![Animated Ants clock with time change and touch interaction](esphome/assets/ants_v2/preview/clock-interaction.gif) |
+
+| Flip Glass | Flip Glass Light |
+| :---: | :---: |
+| ![Animated Flip Glass clock](esphome/assets/flip_glass/preview/flip-12-45-to-12-46.gif) | ![Animated Flip Glass Light clock](esphome/assets/flip_glass_light/preview/flip-12-45-to-12-46.gif) |
 
 I captured these 480 × 320 animated previews
 from the same C++ renderers used by the ESPHome firmware, running in the
@@ -82,16 +86,28 @@ several digits start together, including the transition through midnight.
 [Midnight animation](esphome/assets/flip_glass/preview/flip-midnight.gif) ·
 [Flip Glass implementation](esphome/FLIP_GLASS.md)
 
+### Flip Glass Light
+
+Clear glass digits sit on a pale background with daylight window shadows and
+long floor reflections. This face has its own digit artwork and keeps the same
+1.5-second split-flap transition. The reflections follow the moving digits.
+
+![Flip Glass Light changing from 12:45 to 12:46](esphome/assets/flip_glass_light/preview/flip-12-45-to-12-46.gif)
+
+[Light digit artwork](esphome/assets/flip_glass_light/proposal/digits-preview.png) ·
+[Midnight animation](esphome/assets/flip_glass_light/preview/flip-midnight.gif) ·
+[Flip Glass Light implementation](esphome/FLIP_GLASS_LIGHT.md)
+
 ## Controls and Home Assistant
 
 | Control or feature | Behavior |
 | --- | --- |
-| Swipe left | Cars → Ants → Flip Glass → Cars |
+| Swipe left | Cars → Ants → Flip Glass → Flip Glass Light → Cars |
 | Swipe right | Cycle through the modes in reverse |
 | Tap in Cars | Crush a car and watch its replacement arrive |
 | Tap in Ants | Squash an ant, leaving a fading mark and a replacement ant |
 | Drag in Ants | Scatter nearby ants; use a vertical drag or hold before moving to avoid a mode swipe |
-| Tap in Flip Glass | No action; horizontal swipes still switch modes |
+| Tap in either glass face | No action; horizontal swipes still switch modes |
 | **Clock Display** select | Change the mode from Home Assistant or an automation |
 | Saved selection | Restore the last mode after a restart or power cycle; Cars is the initial default |
 | Time | Synchronize from Home Assistant |
@@ -102,7 +118,7 @@ several digits start together, including the transition through midnight.
 
 ## Install with ESPHome
 
-The current three-mode firmware is in [`esphome/`](esphome/). Its configuration
+The current four-mode firmware is in [`esphome/`](esphome/). Its configuration
 requires **ESPHome 2026.7.0 or later** and uses ESP-IDF. Home Assistant supplies
 the time and the mode selector.
 
@@ -128,8 +144,8 @@ the time and the mode selector.
    **Install → Wirelessly**.
 6. Add the discovered ESPHome device in Home Assistant. The supplied device name
    is **ESPClock** and its hostname is `espclock`.
-7. Choose **Cars**, **Ants**, or **Flip Glass** from **Clock Display**, or swipe
-   the touchscreen.
+7. Choose **Cars**, **Ants**, **Flip Glass**, or **Flip Glass Light** from
+   **Clock Display**, or swipe the touchscreen.
 
 The configuration uses local Wi-Fi secrets. You can also configure ESPHome API
 encryption and OTA authentication for your installation.
@@ -151,11 +167,16 @@ firmware's Ants renderer.
 
 [Desktop preview guide](pc/README.md)
 
+The separate [light-glass design simulation](esphome/assets/flip_glass_light/proposal/)
+includes custom times and sample flips. Serve that folder with a local HTTP
+server and open `index.html`. The firmware previews above come from the C++
+renderer; the browser simulation is the approved design reference.
+
 ## Project layout
 
 | Directory | Contents |
 | --- | --- |
-| [`esphome/`](esphome/) | Current Cars, Ants, and Flip Glass firmware, assets, documentation, and host tests |
+| [`esphome/`](esphome/) | Current Cars, Ants, Flip Glass, and Flip Glass Light firmware, assets, documentation, and host tests |
 | [`pc/`](pc/) | Interactive desktop/browser preview |
 | [`html/`](html/) | Original standalone browser ant-clock prototype |
 | [`esp32/`](esp32/) | Earlier standalone PlatformIO ant-clock port, with its own setup guide |
@@ -179,6 +200,7 @@ python esphome/tests/verify_cars.py
 python esphome/tests/verify_car_explosion.py
 python esphome/tests/verify_ants_v2.py --preview
 python esphome/tests/verify_flip_glass.py
+python esphome/tests/verify_flip_glass_light.py
 node --check pc/app.js
 ```
 
@@ -192,6 +214,8 @@ esphome compile espclock.yaml
 
 Host checks verify rendering and behavior in simulation. Physical touch, audio,
 Bluetooth reception, and display performance need testing on the board.
+
+[Changelog](CHANGELOG.md)
 
 The earlier ports retain their [license](esp32/LICENSE.txt) and
 [third-party notices](esp32/THIRD_PARTY_NOTICES.md).

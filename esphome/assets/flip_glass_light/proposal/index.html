@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Flip Glass Light preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f0f3f7;color:#233449;font:16px system-ui,sans-serif}main{max-width:1050px;margin:35px auto;padding:0 25px}h1{font-size:28px;margin:0 0 8px}p{color:#5c6c7d;line-height:1.6}.clock{display:block;width:min(100%,720px);height:auto;border-radius:12px;box-shadow:0 12px 45px #19395324;margin:24px auto}nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}button,input{font:inherit;border:1px solid #c9d4df;border-radius:8px;padding:9px 14px;background:white;color:inherit;cursor:pointer}button:hover{background:#e0eaf4}label{display:flex;gap:8px;align-items:center;justify-content:center;margin:18px 0}img{display:block;width:100%;height:auto;border-radius:10px;margin:25px 0}small{display:block;text-align:center;color:#63768a}#state{min-height:1.5em;text-align:center}
+</style>
+<main><h1>Flip Glass Light</h1><p>New clear-glass digits, daylight window shadows, and long floor reflections. Approved browser design simulation.</p>
+<canvas class="clock" id="clock" width="480" height="320"></canvas>
+<nav><button id="replay">12:45 → 12:46</button><button id="carry">12:59 → 13:00</button><button id="midnight">23:59 → 00:00</button><button id="live">Current time</button></nav>
+<label>Show time <input id="time" type="time" value="12:45"><button id="show">Show</button></label>
+<label><input type="checkbox" id="rgb" checked> Simulate the display’s RGB565 colors</label>
+<p id="state">Loading artwork…</p><small>480 × 320 display · 1.5-second flip · background and reflections included</small>
+<img src="digits-preview.png" alt="The new glass digits zero through nine">
+<p>This is the approved browser simulation. Flip Glass Light is available through Home Assistant's Clock Display selector and horizontal swipes.</p></main>
+<script src="render.js"></script><script>
+const canvas=document.querySelector('#clock'),ctx=canvas.getContext('2d'),state=document.querySelector('#state');
+const makeCanvas=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c};
+const load=src=>new Promise((resolve,reject)=>{const i=new Image;i.onload=()=>resolve(i);i.onerror=reject;i.src=src});
+let art,animation=0,liveTimer=null,current='12:45';
+function paint(from,to,p){LightPreview.draw(ctx,art,from,to,p,document.querySelector('#rgb').checked)}
+function stop(){cancelAnimationFrame(animation);clearInterval(liveTimer);liveTimer=null}
+function show(t){stop();current=t;paint(t,t,1);state.textContent=t}
+function flip(a,b){stop();const start=performance.now();function tick(now){const p=Math.min(1,(now-start)/1500);paint(a,b,p);state.textContent=p<1?`${a} → ${b}`:b;current=b;if(p<1)animation=requestAnimationFrame(tick)}animation=requestAnimationFrame(tick)}
+Promise.all([load('digits-source.png'),load('background-source.png')]).then(([s,b])=>{art=LightPreview.prepare(makeCanvas,s,b);show('12:45');window.previewReady=true}).catch(e=>state.textContent='Could not load artwork: '+e);
+document.querySelector('#replay').onclick=()=>flip('12:45','12:46');document.querySelector('#carry').onclick=()=>flip('12:59','13:00');document.querySelector('#midnight').onclick=()=>flip('23:59','00:00');
+document.querySelector('#show').onclick=()=>{const t=document.querySelector('#time').value;if(/^\d\d:\d\d$/.test(t))show(t)};
+document.querySelector('#rgb').onchange=()=>show(current);
+document.querySelector('#live').onclick=()=>{stop();const read=()=>{const d=new Date;return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};show(read());state.textContent=current+' · current time';liveTimer=setInterval(()=>{const t=read();if(t!==current){paint(t,t,1);current=t;state.textContent=t+' · current time'}},1000)};
+</script></html>
