@@ -1,8 +1,9 @@
 # espClock
 
 I built espClock as an interactive ESP32-S3 touchscreen clock for Home Assistant.
-Cars park to form the time, ants walk into place, and glass digits flip as the
-minutes change. Swipe the display or choose a mode from Home Assistant.
+Cars park to form the time, ants walk into place, glass digits flip, and pepperoni
+digits get eaten and rebuilt as the minutes change. Swipe the display or choose
+a mode from Home Assistant.
 
 ## Hardware: this specific ESP32-S3 display module
 
@@ -40,6 +41,10 @@ revision when ordering and before flashing.
 | Flip Glass | Flip Glass Light |
 | :---: | :---: |
 | ![Animated Flip Glass clock](esphome/assets/flip_glass/preview/flip-12-45-to-12-46.gif) | ![Animated Flip Glass Light clock](esphome/assets/flip_glass_light/preview/flip-12-45-to-12-46.gif) |
+
+| Pizza |
+| :---: |
+| ![Pepperoni digits eaten and rebuilt on pizza](esphome/assets/pizza/preview/eat-and-rebuild.gif) |
 
 I captured these 480 × 320 animated previews
 from the same C++ renderers used by the ESPHome firmware, running in the
@@ -98,16 +103,29 @@ long floor reflections. This face has its own digit artwork and keeps the same
 [Midnight animation](esphome/assets/flip_glass_light/preview/flip-midnight.gif) ·
 [Flip Glass Light implementation](esphome/FLIP_GLASS_LIGHT.md)
 
+### Pizza
+
+Pepperoni slices form rounded digits on a baked cheese pizza. When a digit
+changes, each slice disappears through four bites, revealing the cheese below.
+Fresh slices then drop into place to form the new numeral. The sequence takes
+3.6 seconds; unchanged digits and the pepperoni colon stay still.
+
+![Pizza changing from 12:45 to 12:46](esphome/assets/pizza/preview/eat-and-rebuild.gif)
+
+[All ten pepperoni digits](esphome/assets/pizza/proposal/digits-preview.png) ·
+[Midnight animation](esphome/assets/pizza/preview/midnight.gif) ·
+[Pizza implementation](esphome/PIZZA.md)
+
 ## Controls and Home Assistant
 
 | Control or feature | Behavior |
 | --- | --- |
-| Swipe left | Cars → Ants → Flip Glass → Flip Glass Light → Cars |
+| Swipe left | Cars → Ants → Flip Glass → Flip Glass Light → Pizza → Cars |
 | Swipe right | Cycle through the modes in reverse |
 | Tap in Cars | Crush a car and watch its replacement arrive |
 | Tap in Ants | Squash an ant, leaving a fading mark and a replacement ant |
 | Drag in Ants | Scatter nearby ants; use a vertical drag or hold before moving to avoid a mode swipe |
-| Tap in either glass face | No action; horizontal swipes still switch modes |
+| Tap in either glass face or Pizza | No action; horizontal swipes still switch modes |
 | **Clock Display** select | Change the mode from Home Assistant or an automation |
 | Saved selection | Restore the last mode after a restart or power cycle; Cars is the initial default |
 | Time | Synchronize from Home Assistant |
@@ -118,7 +136,7 @@ long floor reflections. This face has its own digit artwork and keeps the same
 
 ## Install with ESPHome
 
-The current four-mode firmware is in [`esphome/`](esphome/). Its configuration
+The current five-mode firmware is in [`esphome/`](esphome/). Its configuration
 requires **ESPHome 2026.7.0 or later** and uses ESP-IDF. Home Assistant supplies
 the time and the mode selector.
 
@@ -144,7 +162,7 @@ the time and the mode selector.
    **Install → Wirelessly**.
 6. Add the discovered ESPHome device in Home Assistant. The supplied device name
    is **ESPClock** and its hostname is `espclock`.
-7. Choose **Cars**, **Ants**, **Flip Glass**, or **Flip Glass Light** from
+7. Choose **Cars**, **Ants**, **Flip Glass**, **Flip Glass Light**, or **Pizza** from
    **Clock Display**, or swipe the touchscreen.
 
 The configuration uses local Wi-Fi secrets. You can also configure ESPHome API
@@ -172,11 +190,16 @@ includes custom times and sample flips. Serve that folder with a local HTTP
 server and open `index.html`. The firmware previews above come from the C++
 renderer; the browser simulation is the approved design reference.
 
+The [Pizza design simulation](esphome/assets/pizza/proposal/) includes custom
+times, minute and midnight changes, pause, replay, and a slider for inspecting
+individual bites. Serve that folder in the same way. The Pizza GIFs above are
+captured from the firmware renderer.
+
 ## Project layout
 
 | Directory | Contents |
 | --- | --- |
-| [`esphome/`](esphome/) | Current Cars, Ants, Flip Glass, and Flip Glass Light firmware, assets, documentation, and host tests |
+| [`esphome/`](esphome/) | Current Cars, Ants, Flip Glass, Flip Glass Light, and Pizza firmware, assets, documentation, and host tests |
 | [`pc/`](pc/) | Interactive desktop/browser preview |
 | [`html/`](html/) | Original standalone browser ant-clock prototype |
 | [`esp32/`](esp32/) | Earlier standalone PlatformIO ant-clock port, with its own setup guide |
@@ -188,7 +211,7 @@ implementation still uses them. The project is now called **espClock**.
 
 The existing host tests compile the actual C++ renderers and check touch
 handling, gestures, sprite rendering, transitions, and framebuffer bounds. The
-Flip Glass tests cover every minute boundary in a full day. They also regenerate
+Flip Glass and Pizza tests cover every minute boundary in a full day. They also regenerate
 the firmware screenshots used in this README.
 
 With Python, Pillow, NumPy, and MSVC on Windows or g++ on Linux, run from the
@@ -201,6 +224,7 @@ python esphome/tests/verify_car_explosion.py
 python esphome/tests/verify_ants_v2.py --preview
 python esphome/tests/verify_flip_glass.py
 python esphome/tests/verify_flip_glass_light.py
+python esphome/tests/verify_pizza.py
 node --check pc/app.js
 ```
 

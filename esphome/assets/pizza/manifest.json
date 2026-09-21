@@ -1,0 +1,16 @@
+{
+  "status": "approved",
+  "size": [
+    480,
+    320
+  ],
+  "duration_ms": 3600,
+  "sprite_size": 72,
+  "compiled_bytes": 1415522,
+  "source_sha256": {
+    "pepperoni-source.png": "a1f622ee0a8bbef485bfd8f592c0aa495c66c1ee6813e7d1c06188f8b34dff31",
+    "background-source.png": "fcfb8d0c6c2769b18285da18ecbb245ccd245912a1430d6a2a7e0304990dce66",
+    "render.js": "d27bcf612f8a06b57ac5f32b751bfa960c045a619a1ee38449f3d92be6cff12c"
+  },
+  "header_sha256": "1d3992fa66cbfb3d443d643ae4a51258b0e451ffac5bc79864fa2dff371ddb61"
+}

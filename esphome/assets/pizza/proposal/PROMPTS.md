@@ -1,0 +1,13 @@
+# Pizza artwork provenance
+
+Generated with the built-in image generation tool on 2026-09-21. Reference: the user-provided pizza photograph, `WhatsApp Image 2026-09-21 at 13.45.38.jpeg`.
+
+## Empty pizza background
+
+Use case: photorealistic-natural. Create a 1536x1024 landscape 3:2 background image for a pizza clock using the attached photograph as the exact visual style and composition reference. Remove ALL pepperoni slices, digits, colon and any toppings. Keep only the delicious golden melted mozzarella cheese with fine brown baked blisters and some red tomato sauce beneath, plus the golden baked pizza crust cropped in all four corners and along the left and right edges, exactly like the reference. Top-down orthographic food photograph, full-bleed close crop of a very large pizza, no table, no plate, no utensils, no pizza cuts. Broad central cheese area for adding pepperoni numerals later. Keep the cheese around the central band from 28% to 70% of image height predominantly light creamy golden mozzarella, with subtle realistic toasted spots so dark red pepperoni will be legible. Match the warm realistic light and texture in the reference, not an illustration. No text, no numbers, no pepperoni, no basil, no added objects.
+
+## Pepperoni sprite sheet
+
+Use case: photorealistic-natural. Asset type: small sprites for a realistic pizza clock. Use the attached pizza photograph ONLY as reference for the individual pepperoni slices' appearance. Generate an asset sheet, 1536x1024 landscape, real transparent alpha background. Exactly SIX individual baked pepperoni slices, one in each cell of a strict 3-column 2-row grid with 512x512 cells. Each slice is centered in its cell, approximately 360px diameter with ample transparent margin. Each is a complete roughly circular pepperoni disk seen from directly overhead, rich deep red-brown and burnt orange, glossy oil glints, fine orange fat flecks, subtle curled toasted dark edge and natural slight variation. Match the pepperoni in the reference photograph as closely as possible. Very slight raised edges, mostly flat disks, not bowl-like cups. Six different natural texture variations with consistent scale and warm top-left food-photography lighting. OPAQUE meat interiors with real transparent exterior. Nothing between slices. NO cheese, NO pizza, NO plate, NO ground plane, NO printed labels, NO numbers, NO visible checkerboard. No exterior cast shadows because those will be drawn separately by the clock compositor.
+
+The preview compositor crops the six alpha sprites, arranges them into digits, and masks progressive scalloped bites. The preview uses the generated assets directly.

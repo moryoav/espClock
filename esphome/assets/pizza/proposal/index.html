@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pizza clock preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fff8ed;color:#56311f;font:16px system-ui,sans-serif}main{max-width:1080px;margin:30px auto;padding:0 24px}h1{margin:0 0 8px;font-size:30px}p{line-height:1.6;color:#795341}.clock{display:block;width:min(100%,720px);height:auto;border-radius:14px;box-shadow:0 12px 40px #75310c30;margin:24px auto}nav{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}button,input{font:inherit;border:1px solid #d8b89a;border-radius:8px;padding:9px 13px;background:#fff;color:inherit}button{cursor:pointer}button:hover{background:#ffe8c9}label{display:flex;gap:9px;align-items:center;justify-content:center;margin:16px 0}input[type=range]{width:min(480px,70%);padding:0;accent-color:#a33c1e}input[type=checkbox]{accent-color:#a33c1e}#status{text-align:center;min-height:1.6em;font-weight:600}img{display:block;width:100%;height:auto;border-radius:12px;margin:26px 0}small{display:block;text-align:center;color:#795341}
+</style>
+<main><h1>Pizza clock</h1><p>Pepperoni slices form each digit on a real pizza background. Only changed digits get eaten, bite by bite, before fresh slices land in the new shape.</p>
+<canvas id="clock" class="clock" width="480" height="320"></canvas>
+<nav><button id="minute">12:45 → 12:46</button><button id="carry">12:59 → 13:00</button><button id="midnight">23:59 → 00:00</button><button id="pause">Pause</button><button id="replay">Replay</button></nav>
+<label>Animation <input id="scrub" type="range" min="0" max="3600" value="3600" step="10"><output id="elapsed">3.60 s</output></label>
+<label>Show time <input id="time" type="time" value="12:45"><button id="show">Show</button><button id="current">Current time</button></label>
+<label><input id="rgb" type="checkbox" checked>Simulate the display’s RGB565 colors</label>
+<p id="status">Loading artwork…</p><small>480 × 320 display · four bites per slice · 3.6-second eat-and-rebuild sequence</small>
+<img src="digits-preview.png" alt="All ten pepperoni numerals on cheese">
+<img src="bite-stages.png" alt="A whole pepperoni slice, three successive bite stages, and the empty cheese after the last bite">
+<p>Approved design simulation. The firmware version uses these digit shapes, artwork, and animation timings.</p></main>
+<script src="render.js"></script><script>
+const canvas=document.querySelector('#clock'),ctx=canvas.getContext('2d'),statusEl=document.querySelector('#status'),slider=document.querySelector('#scrub');
+const load=src=>new Promise((resolve,reject)=>{const i=new Image;i.onload=()=>resolve(i);i.onerror=reject;i.src=src});
+const makeCanvas=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c};
+let art,from='12:45',to='12:46',ms=3600,running=false,raf=0,start=0;
+function paint(){
+ PizzaPreview.draw(ctx,art,from,to,ms,document.querySelector('#rgb').checked);slider.value=ms;document.querySelector('#elapsed').textContent=(ms/1000).toFixed(2)+' s';
+ statusEl.textContent=ms>=3600?to:ms<1780?'Taking bites out of the old digit'+(from==='12:45'?'':'s'):ms<2050?'Ready for fresh pepperoni':'Placing the new slices';
+}
+function stop(){running=false;cancelAnimationFrame(raf);document.querySelector('#pause').textContent='Resume'}
+function tick(now){ms=Math.min(3600,now-start);paint();if(ms<3600&&running)raf=requestAnimationFrame(tick);else stop()}
+function play(a=from,b=to){stop();from=a;to=b;ms=0;start=performance.now();running=true;document.querySelector('#pause').textContent='Pause';paint();raf=requestAnimationFrame(tick)}
+function show(t){stop();from=to=t;ms=3600;paint()}
+Promise.all([load('pepperoni-source.png'),load('background-source.png')]).then(([s,b])=>{art=PizzaPreview.prepare(makeCanvas,s,b);show('12:45');window.previewReady=true;window.pizzaPreview={seek:(a,b,t)=>{stop();from=a;to=b;ms=t;paint()},art}}).catch(e=>statusEl.textContent='Could not load artwork: '+e);
+document.querySelector('#minute').onclick=()=>play('12:45','12:46');document.querySelector('#carry').onclick=()=>play('12:59','13:00');document.querySelector('#midnight').onclick=()=>play('23:59','00:00');
+document.querySelector('#replay').onclick=()=>play(from===to?'12:45':from,from===to?'12:46':to);
+document.querySelector('#pause').onclick=()=>{if(running)stop();else{if(ms>=3600){play(from===to?'12:45':from,from===to?'12:46':to);return}start=performance.now()-ms;running=true;document.querySelector('#pause').textContent='Pause';raf=requestAnimationFrame(tick)}};
+slider.oninput=()=>{stop();if(from===to){from='12:45';to='12:46'}ms=Number(slider.value);paint()};
+document.querySelector('#show').onclick=()=>{const t=document.querySelector('#time').value;if(/^\d\d:\d\d$/.test(t))show(t)};
+document.querySelector('#current').onclick=()=>{const d=new Date;show(String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'))};
+document.querySelector('#rgb').onchange=()=>paint();
+</script></html>

@@ -14,6 +14,8 @@ esphome:
     - flip_glass_renderer.h
     - flip_glass_light_assets.h
     - flip_glass_light_renderer.h
+    - pizza_assets.h
+    - pizza_renderer.h
 
 esp32:
   variant: esp32s3
@@ -120,7 +122,9 @@ display:
     auto_clear_enabled: false
     update_interval: 42ms
     lambda: |-
-      if (flip_glass_light::selected()) {
+      if (pizza::selected()) {
+        pizza::render(it);
+      } else if (flip_glass_light::selected()) {
         flip_glass_light::render(it);
       } else if (flip_glass::selected()) {
         flip_glass::render(it);
@@ -183,7 +187,7 @@ touchscreen:
             if (action == clock_gestures::Action::Next) call.select_next(true);
             else call.select_previous(true);
             call.perform();
-          } else if (action == clock_gestures::Action::Tap && !flip_glass::selected() && !flip_glass_light::selected()) {
+          } else if (action == clock_gestures::Action::Tap && !flip_glass::selected() && !flip_glass_light::selected() && !pizza::selected()) {
             if (clock_router::cars_selected()) {
               car_clock::tap(gesture.x, gesture.y);
             } else if (ants_v2::selected()) {
@@ -205,6 +209,7 @@ select:
       - "Ants"
       - "Flip Glass"
       - "Flip Glass Light"
+      - "Pizza"
     # Apply both restored startup values and new selections to the renderer.
     on_value:
       - lambda: |-
@@ -212,8 +217,9 @@ select:
           ants_v2::set_selected(x == "Ants");
           flip_glass::set_selected(x == "Flip Glass");
           flip_glass_light::set_selected(x == "Flip Glass Light");
+          pizza::set_selected(x == "Pizza");
           ants_v2_sim::touch_end();
-          if (x == "Ants" || x == "Flip Glass" || x == "Flip Glass Light") {
+          if (x == "Ants" || x == "Flip Glass" || x == "Flip Glass Light" || x == "Pizza") {
             clock_router::set_mode(clock_router::DisplayMode::Ants);
           } else {
             clock_router::set_mode(clock_router::DisplayMode::Cars);
